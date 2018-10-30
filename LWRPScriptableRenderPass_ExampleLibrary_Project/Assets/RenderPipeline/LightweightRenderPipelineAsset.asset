@@ -43,4 +43,4 @@ MonoBehaviour:
   m_LocalShadowsAtlasResolution: 256
   m_MaxPixelLights: 0
   m_ShadowAtlasResolution: 256
-  m_ResourcesAsset: {fileID: 11400000, guid: 00000000000000000000000000000000, type: 0}
+  m_ResourcesAsset: {fileID: 11400000, guid: aac5a08c32552a14c89394b703f1978a, type: 2}

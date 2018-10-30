@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6903b0d7f55d3c04185790306008d530, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BlurAmount: {x: 2.5, y: 2.5}
+  m_BlurAmount: {x: 2, y: 2}
 --- !u!114 &534669907
 MonoBehaviour:
   m_ObjectHideFlags: 0
