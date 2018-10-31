@@ -1,6 +1,6 @@
 # LWRP Scriptable Render Pass - Example Library
 
-**Description""
+**Description**
 
 This Unity project demonstrates several different implementation examples using the Scriptable Render Pass API and Shader Graph in the Lightweight Render Pipeline.
 
@@ -8,7 +8,7 @@ This Unity project demonstrates several different implementation examples using 
 - Blurry Refractions (Grab Pass-like)
 - Screen Filter Effects
 
-These are modified versions that can be found in the following projects:
+These are modified versions that come from the following projects:
 - Boat Attack: https://github.com/Verasl/BoatAttack/
 - Extending LWRP: https://github.com/johnsietsma/ExtendingLWRP
 
