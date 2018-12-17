@@ -21,7 +21,7 @@ All examples/assets/shaders are offered 'as is' and you are welcome to extract t
 
 **Software Requirements**
 
-- Unity 2018.3.0b12
+- Unity 2018.3.0f2
 - Lightweight Render Pipeline 4.6.0
 
 **Contact**
