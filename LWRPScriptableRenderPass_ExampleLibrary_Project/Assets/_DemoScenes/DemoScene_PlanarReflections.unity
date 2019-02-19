@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657928, g: 0.49641544, b: 0.5748179, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028471, g: 0.22571528, b: 0.30692485, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 10
+    serializedVersion: 12
     m_Resolution: 2
     m_BakeResolution: 10
     m_AtlasSize: 512
@@ -62,6 +62,7 @@ LightmapSettings:
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
     m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
     m_Padding: 2
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
@@ -76,10 +77,16 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 256
     m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 256
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 2
+    m_PVRDenoiserTypeDirect: 0
+    m_PVRDenoiserTypeIndirect: 0
+    m_PVRDenoiserTypeAO: 0
     m_PVRFilterTypeDirect: 0
     m_PVRFilterTypeIndirect: 0
     m_PVRFilterTypeAO: 0
-    m_PVRFilteringMode: 1
+    m_PVREnvironmentMIS: 0
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
@@ -88,8 +95,9 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
+    m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -137,12 +145,13 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 170076733}
   m_Enabled: 1
-  serializedVersion: 8
+  serializedVersion: 9
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
@@ -188,6 +197,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8085679795656119150, guid: 41435734e15a6814c951bf0a999121cb,
+        type: 3}
+      propertyPath: m_Name
+      value: Spiderbot_Prefab
+      objectReference: {fileID: 0}
     - target: {fileID: 8085679795656281934, guid: 41435734e15a6814c951bf0a999121cb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -243,16 +257,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8085679795656119150, guid: 41435734e15a6814c951bf0a999121cb,
-        type: 3}
-      propertyPath: m_Name
-      value: Spiderbot_Prefab
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085679795648831658, guid: 41435734e15a6814c951bf0a999121cb,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 90327b6ff668b4fdea6a230fd712dae0, type: 2}
     - target: {fileID: 8085679795656281934, guid: 41435734e15a6814c951bf0a999121cb,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -268,6 +272,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8085679795648831658, guid: 41435734e15a6814c951bf0a999121cb,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 90327b6ff668b4fdea6a230fd712dae0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41435734e15a6814c951bf0a999121cb, type: 3}
 --- !u!1 &507016309
@@ -298,6 +307,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 507016309}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -356,6 +366,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 507016309}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -409,9 +420,10 @@ Camera:
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_GateFitMode: 2
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -463,6 +475,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 534669902}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: d3771bd020d83564886bc640443e0fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -473,6 +486,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 4294967295
   target: {fileID: 1258131190}
+  m_planeOffset: 0
 --- !u!114 &534669907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,14 +496,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 534669902}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   volumeTrigger: {fileID: 534669905}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   stopNaNPropagation: 1
+  finalBlitToCameraTarget: 1
   antialiasingMode: 1
   temporalAntialiasing:
     jitterSpread: 0.75
@@ -539,6 +555,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2044231491090912685, guid: be3717bb336f9d0438cf7dd37085c894,
+        type: 3}
+      propertyPath: m_Name
+      value: Barrel_Prefab
+      objectReference: {fileID: 0}
     - target: {fileID: 2044231491090876813, guid: be3717bb336f9d0438cf7dd37085c894,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -594,11 +615,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 194.38599
       objectReference: {fileID: 0}
-    - target: {fileID: 2044231491090912685, guid: be3717bb336f9d0438cf7dd37085c894,
-        type: 3}
-      propertyPath: m_Name
-      value: Barrel_Prefab
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be3717bb336f9d0438cf7dd37085c894, type: 3}
 --- !u!1001 &655949155
@@ -608,10 +624,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2044231491088976751, guid: be3717bb336f9d0438cf7dd37085c894,
+    - target: {fileID: 2044231491090912685, guid: be3717bb336f9d0438cf7dd37085c894,
         type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 2
+      propertyPath: m_Name
+      value: Barrel_Prefab (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2044231491090876813, guid: be3717bb336f9d0438cf7dd37085c894,
         type: 3}
@@ -668,10 +684,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 308.44
       objectReference: {fileID: 0}
-    - target: {fileID: 2044231491090912685, guid: be3717bb336f9d0438cf7dd37085c894,
+    - target: {fileID: 2044231491088976751, guid: be3717bb336f9d0438cf7dd37085c894,
         type: 3}
-      propertyPath: m_Name
-      value: Barrel_Prefab (1)
+      propertyPath: m_Materials.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2044231491090912687, guid: be3717bb336f9d0438cf7dd37085c894,
         type: 3}
@@ -766,6 +782,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 699218077}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -1010,10 +1027,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2044231491088976751, guid: be3717bb336f9d0438cf7dd37085c894,
+    - target: {fileID: 2044231491090912685, guid: be3717bb336f9d0438cf7dd37085c894,
         type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 2
+      propertyPath: m_Name
+      value: Barrel_Prefab (2)
       objectReference: {fileID: 0}
     - target: {fileID: 2044231491090876813, guid: be3717bb336f9d0438cf7dd37085c894,
         type: 3}
@@ -1070,10 +1087,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 161.837
       objectReference: {fileID: 0}
-    - target: {fileID: 2044231491090912685, guid: be3717bb336f9d0438cf7dd37085c894,
+    - target: {fileID: 2044231491088976751, guid: be3717bb336f9d0438cf7dd37085c894,
         type: 3}
-      propertyPath: m_Name
-      value: Barrel_Prefab (2)
+      propertyPath: m_Materials.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2044231491090912687, guid: be3717bb336f9d0438cf7dd37085c894,
         type: 3}
@@ -1162,6 +1179,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1714178173}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

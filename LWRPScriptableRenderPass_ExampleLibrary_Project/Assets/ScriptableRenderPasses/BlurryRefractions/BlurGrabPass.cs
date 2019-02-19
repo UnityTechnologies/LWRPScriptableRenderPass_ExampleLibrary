@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.Experimental.Rendering.LightweightPipeline;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.LWRP;
+using UnityEngine.Experimental.Rendering.LWRP;
 
 [ExecuteInEditMode]
 [ImageEffectAllowedInSceneView]
