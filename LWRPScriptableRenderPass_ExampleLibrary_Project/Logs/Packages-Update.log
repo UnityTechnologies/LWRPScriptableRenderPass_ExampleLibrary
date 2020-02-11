@@ -1,0 +1,8 @@
+
+=== Wed Feb 12 00:22:51 2020
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.render-pipelines.lightweight from version 6.7.1 to 6.9.0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BlurGrabPass
   m_EditorClassIdentifier: 
   settings:
-    m_BlurAmount: {x: 3, y: 3}
+    m_BlurAmount: {x: 2, y: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
