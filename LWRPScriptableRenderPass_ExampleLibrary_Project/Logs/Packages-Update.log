@@ -1,0 +1,19 @@
+
+=== Wed Feb 12 00:22:51 2020
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.render-pipelines.lightweight from version 6.7.1 to 6.9.0
+
+=== Wed Feb 12 00:30:19 2020
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.render-pipelines.lightweight from version 6.9.2 to 7.1.8
+  com.unity.timeline from version 1.1.0 to 1.2.10
+The following packages were removed:
+  com.unity.package-manager-ui@2.2.0

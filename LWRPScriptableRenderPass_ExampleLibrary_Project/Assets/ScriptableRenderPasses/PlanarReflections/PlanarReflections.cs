@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Unity.Mathematics;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using UnityEngine.Rendering.LWRP;
-using UnityEngine.Experimental.Rendering.LWRP;
+using UnityEngine.Experimental.Rendering;
+using Object = UnityEngine.Object;
 
-    [ImageEffectAllowedInSceneView]
-    public class PlanarReflections : MonoBehaviour, IBeforeCameraRender
+[ExecuteAlways]
+    public class PlanarReflections : MonoBehaviour
     {
         [System.Serializable]
         public enum ResolutionMulltiplier
@@ -23,6 +25,7 @@ using UnityEngine.Experimental.Rendering.LWRP;
             public ResolutionMulltiplier m_ResolutionMultiplier = ResolutionMulltiplier.Third;
             public float m_ClipPlaneOffset = 0.07f;
             public LayerMask m_ReflectLayers = -1;
+            public bool m_shadows;
         }
 
         
@@ -39,6 +42,11 @@ using UnityEngine.Experimental.Rendering.LWRP;
         
         private int2 m_OldReflectionTextureSize;
 
+        private void OnEnable()
+        {
+            RenderPipelineManager.beginCameraRendering += ExecuteBeforeCameraRender;
+        }
+
         // Cleanup all the objects we possibly have created
         private void OnDisable()
         {
@@ -52,6 +60,8 @@ using UnityEngine.Experimental.Rendering.LWRP;
 
         void Cleanup()
         {
+            RenderPipelineManager.beginCameraRendering -= ExecuteBeforeCameraRender;
+            
             if(m_ReflectionCamera)
             {
                 m_ReflectionCamera.targetTexture = null;
@@ -80,6 +90,8 @@ using UnityEngine.Experimental.Rendering.LWRP;
             if (dest == null)
                 return;
             dest.CopyFrom(src);
+            dest.cameraType = CameraType.Game;
+            dest.useOcclusionCulling = false;
         }
         
         private void UpdateReflectionCamera(Camera realCamera)
@@ -189,13 +201,14 @@ using UnityEngine.Experimental.Rendering.LWRP;
         private Camera CreateMirrorObjects(Camera currentCamera)
         {
             GameObject go =
-                new GameObject("Planar Refl Camera id" + GetInstanceID() + " for " + currentCamera.GetInstanceID(),
+                new GameObject($"Planar Refl Camera id{GetInstanceID().ToString()} for {currentCamera.GetInstanceID().ToString()}",
                     typeof(Camera));
-            LWRPAdditionalCameraData lwrpCamData =
-                go.AddComponent(typeof(LWRPAdditionalCameraData)) as LWRPAdditionalCameraData;
-            lwrpCamData.renderShadows = false; // turn off shadows for the reflection camera
-            lwrpCamData.requiresColorOption = CameraOverrideOption.Off;
-            lwrpCamData.requiresDepthOption = CameraOverrideOption.Off;
+            UnityEngine.Rendering.Universal.UniversalAdditionalCameraData lwrpCamData =
+                go.AddComponent(typeof(UnityEngine.Rendering.Universal.UniversalAdditionalCameraData)) as UnityEngine.Rendering.Universal.UniversalAdditionalCameraData;
+            UnityEngine.Rendering.Universal.UniversalAdditionalCameraData lwrpCamDataCurrent = currentCamera.GetComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
+            lwrpCamData.renderShadows = m_settings.m_shadows; // turn off shadows for the reflection camera
+            lwrpCamData.requiresColorOption = UnityEngine.Rendering.Universal.CameraOverrideOption.Off;
+            lwrpCamData.requiresDepthOption = UnityEngine.Rendering.Universal.CameraOverrideOption.Off;
             var reflectionCamera = go.GetComponent<Camera>();
             reflectionCamera.transform.SetPositionAndRotation(transform.position, transform.rotation);
             //reflectionCamera.targetTexture = m_ReflectionTexture;
@@ -203,7 +216,7 @@ using UnityEngine.Experimental.Rendering.LWRP;
             reflectionCamera.depth = -10;
             reflectionCamera.enabled = false;
             reflectionCamera.allowHDR = currentCamera.allowHDR;
-            go.hideFlags = HideFlags.DontSave;
+            go.hideFlags = HideFlags.HideAndDontSave;
 
             return reflectionCamera;
         }
@@ -215,10 +228,7 @@ using UnityEngine.Experimental.Rendering.LWRP;
             return new int2(x, y);
         }
 
-        public void ExecuteBeforeCameraRender(
-            LightweightRenderPipeline pipelineInstance,
-            ScriptableRenderContext context,
-            Camera camera)
+        public void ExecuteBeforeCameraRender(ScriptableRenderContext context, Camera camera)
         {
 
             if (!enabled)
@@ -232,17 +242,23 @@ using UnityEngine.Experimental.Rendering.LWRP;
             QualitySettings.lodBias = bias * 0.5f;
             
             UpdateReflectionCamera(camera);
+            m_ReflectionCamera.cameraType = camera.cameraType;
 
-            var res = ReflectionResolution(camera, 1);
+            var res = ReflectionResolution(camera, UnityEngine.Rendering.Universal.UniversalRenderPipeline.asset.renderScale);
             if (m_ReflectionTexture == null)
             {
-                m_ReflectionTexture = RenderTexture.GetTemporary(res.x, res.y, 16, RenderTextureFormat.DefaultHDR);
+                bool useHDR10 = SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.RGB111110Float);
+                RenderTextureFormat hdrFormat =
+                    useHDR10 ? RenderTextureFormat.RGB111110Float : RenderTextureFormat.DefaultHDR;
+                m_ReflectionTexture = RenderTexture.GetTemporary(res.x, res.y, 16,
+                    GraphicsFormatUtility.GetGraphicsFormat(hdrFormat, true));
+                m_ReflectionTexture.useMipMap = true;
+                m_ReflectionTexture.autoGenerateMips = true;
             }
-
             
             m_ReflectionCamera.targetTexture = m_ReflectionTexture;
 
-            LightweightRenderPipeline.RenderSingleCamera(pipelineInstance, context, m_ReflectionCamera);
+            UnityEngine.Rendering.Universal.UniversalRenderPipeline.RenderSingleCamera(context, m_ReflectionCamera);
 
             GL.invertCulling = false;
             RenderSettings.fog = true;
