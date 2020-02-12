@@ -203,12 +203,12 @@ using Object = UnityEngine.Object;
             GameObject go =
                 new GameObject($"Planar Refl Camera id{GetInstanceID().ToString()} for {currentCamera.GetInstanceID().ToString()}",
                     typeof(Camera));
-            LWRPAdditionalCameraData lwrpCamData =
-                go.AddComponent(typeof(LWRPAdditionalCameraData)) as LWRPAdditionalCameraData;
-            LWRPAdditionalCameraData lwrpCamDataCurrent = currentCamera.GetComponent<LWRPAdditionalCameraData>();
+            UnityEngine.Rendering.Universal.UniversalAdditionalCameraData lwrpCamData =
+                go.AddComponent(typeof(UnityEngine.Rendering.Universal.UniversalAdditionalCameraData)) as UnityEngine.Rendering.Universal.UniversalAdditionalCameraData;
+            UnityEngine.Rendering.Universal.UniversalAdditionalCameraData lwrpCamDataCurrent = currentCamera.GetComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
             lwrpCamData.renderShadows = m_settings.m_shadows; // turn off shadows for the reflection camera
-            lwrpCamData.requiresColorOption = CameraOverrideOption.Off;
-            lwrpCamData.requiresDepthOption = CameraOverrideOption.Off;
+            lwrpCamData.requiresColorOption = UnityEngine.Rendering.Universal.CameraOverrideOption.Off;
+            lwrpCamData.requiresDepthOption = UnityEngine.Rendering.Universal.CameraOverrideOption.Off;
             var reflectionCamera = go.GetComponent<Camera>();
             reflectionCamera.transform.SetPositionAndRotation(transform.position, transform.rotation);
             //reflectionCamera.targetTexture = m_ReflectionTexture;
@@ -244,7 +244,7 @@ using Object = UnityEngine.Object;
             UpdateReflectionCamera(camera);
             m_ReflectionCamera.cameraType = camera.cameraType;
 
-            var res = ReflectionResolution(camera, LightweightRenderPipeline.asset.renderScale);
+            var res = ReflectionResolution(camera, UnityEngine.Rendering.Universal.UniversalRenderPipeline.asset.renderScale);
             if (m_ReflectionTexture == null)
             {
                 bool useHDR10 = SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.RGB111110Float);
@@ -258,7 +258,7 @@ using Object = UnityEngine.Object;
             
             m_ReflectionCamera.targetTexture = m_ReflectionTexture;
 
-            LightweightRenderPipeline.RenderSingleCamera(context, m_ReflectionCamera);
+            UnityEngine.Rendering.Universal.UniversalRenderPipeline.RenderSingleCamera(context, m_ReflectionCamera);
 
             GL.invertCulling = false;
             RenderSettings.fog = true;

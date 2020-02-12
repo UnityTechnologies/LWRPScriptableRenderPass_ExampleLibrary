@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.LWRP;
 
-public class BlurGrabPass : ScriptableRendererFeature
+
+public class BlurGrabPass : UnityEngine.Rendering.Universal.ScriptableRendererFeature
 {
     [Serializable]
     public class Settings
@@ -26,13 +26,13 @@ public class BlurGrabPass : ScriptableRendererFeature
     public override void Create()
     {
         m_grabPass = new GrabPassImpl(m_BlurMaterial, currentBlurAmount, m_BasicBlitMaterial);
-        m_grabPass.renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
+        m_grabPass.renderPassEvent = UnityEngine.Rendering.Universal.RenderPassEvent.AfterRenderingSkybox;
         m_BasicBlitMaterial = CoreUtils.CreateEngineMaterial(Shader.Find(k_BasicBlitShader));
         m_BlurMaterial = CoreUtils.CreateEngineMaterial(Shader.Find(k_BlurShader));
         currentBlurAmount = settings.m_BlurAmount;
     }
 
-    public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
+    public override void AddRenderPasses(UnityEngine.Rendering.Universal.ScriptableRenderer renderer, ref UnityEngine.Rendering.Universal.RenderingData renderingData)
     {
         renderer.EnqueuePass(m_grabPass);
     }
@@ -51,7 +51,7 @@ public class BlurGrabPass : ScriptableRendererFeature
 }
 
 
-public class GrabPassImpl : ScriptableRenderPass
+public class GrabPassImpl : UnityEngine.Rendering.Universal.ScriptableRenderPass
 {
     const string k_RenderGrabPassTag = "Blur Refraction Pass";
 
@@ -64,12 +64,12 @@ public class GrabPassImpl : ScriptableRenderPass
     ShaderTagId screenCopyID = new ShaderTagId("_ScreenCopyTexture");
     private RenderTextureDescriptor m_OpaqueDesc;
     private RenderTextureDescriptor m_BaseDescriptor;
-    private RenderTargetHandle m_ColorHandle;
+    private UnityEngine.Rendering.Universal.RenderTargetHandle m_ColorHandle;
 
     public GrabPassImpl(Material blurMaterial, Vector2 blurAmount, Material blitMaterial)
     {
         m_BlurMaterial = blurMaterial;
-        m_ColorHandle = RenderTargetHandle.CameraTarget;
+        m_ColorHandle = UnityEngine.Rendering.Universal.RenderTargetHandle.CameraTarget;
         m_BlitMaterial = blitMaterial;
         m_BlurAmount = blurAmount;
     }
@@ -86,7 +86,7 @@ public class GrabPassImpl : ScriptableRenderPass
         m_BlurAmount = newBlurAmount;
     }
 
-    public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
+    public override void Execute(ScriptableRenderContext context, ref UnityEngine.Rendering.Universal.RenderingData renderingData)
     {
         CommandBuffer buf = CommandBufferPool.Get(k_RenderGrabPassTag);
 
